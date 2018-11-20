@@ -6,16 +6,9 @@ OUTPUT_ROM="ROM.smc"
 # compile the source files to the out folder
 pushd src > /dev/null
 
-SOURCE_FILES=$(ls | grep .asm)
+OUTFILE="../out/Main.obj"
 
-for FILE in $SOURCE_FILES
-do
-    OUTFILE="../out/"${FILE%.*}".obj"
-
-    echo "Compiling" $FILE "to" $OUTFILE
-
-    wla-65816 -v -o $OUTFILE $FILE
-done
+wla-65816 -v -o $OUTFILE Main.asm
 
 popd > /dev/null
 

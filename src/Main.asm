@@ -1,27 +1,27 @@
 .include "deps/Header.inc"
 .include "deps/InitSnes.asm"
 
+.include "VBlank.asm"
+
 VBlank:   ; Needed to satisfy interrupt definition in "Header.inc"
   RTI
 
 Start:
   InitSnes ; Initialize the SNES
-  sep #$20
+  SEP #$20 ; Reset Processor Status bits and set accumulator to 8 bits
 
-  ; Force VBlank
-  lda #%10000000
-  sta $2100
-
-  ; Set background colour registers
-  lda #%11100000
+  ; Initialize background to black
+  lda #$00
   sta $2122
-  lda #%00000000
+  lda #$00
   sta $2122
 
-  ; End VBlank
-  lda #%00001111
-  sta $2100
+  GameLoop:
+    VBlank_Start
 
-  ; Loop
-Main:
-  jmp Main
+    ; End VBlank
+    VBlank_End
+
+  jmp GameLoop
+
+  
